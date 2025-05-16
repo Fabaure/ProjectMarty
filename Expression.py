@@ -6,9 +6,9 @@ marty = Marty("wifi", adresse_ip)
 
 def angry():
     if(marty.is_conn_ready):
-        marty.eyes("angry",500)
+        marty.eyes("angry",500) # Eyes take ether a name of preprogramed expression and a time of execution or an angle of rotation and a time of execution
     else:
-        print("Marty is sadely not connected")
+        print("Marty is sadely not connected") # Print an error when not connected
         return 0
     return 0
 
