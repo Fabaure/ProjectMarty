@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel
 from PyQt6.QtCore import Qt
+from martypy import Marty
 
 class ControlPanel(QWidget):
     def __init__(self):
@@ -12,20 +13,31 @@ class ControlPanel(QWidget):
     def interface(self):
         layout = QVBoxLayout()
 
-        self.bouton_avancer = QPushButton("Avancer")
-        self.bouton_reculer = QPushButton("Reculer")
-        self.bouton_droite = QPushButton("Aller à droite")
-        self.bouton_gauche = QPushButton("Aller à gauche")
+        self.btn_forward = QPushButton("Move forward")
+        self.btn_backward = QPushButton("Move backward")
+        self.btn_right = QPushButton("Move to right")
+        self.btn_left = QPushButton("Move to left")
+        self.btn_dance = QPushButton("Dance")
         
-        layout.addWidget(self.bouton_avancer)
-        layout.addWidget(self.bouton_reculer)
-        layout.addWidget(self.bouton_droite)
-        layout.addWidget(self.bouton_gauche)
+        layout.addWidget(self.btn_forward)
+        layout.addWidget(self.btn_backward)
+        layout.addWidget(self.btn_right)
+        layout.addWidget(self.btn_left)
+        layout.addWidget(self.btn_dance)
+
+
+        self.btn_dance.clicked.connect(lambda: self.action())
 
         self.setLayout(layout)
 
 
+    def action(self):
+        marty.dance()
+
+
 if __name__ == "__main__":
+    adresse_ip = "192.168.0.101" # à modifier
+    marty = Marty("wifi", adresse_ip) # connexion à Marty
     app = QApplication(sys.argv)
     fenetre = ControlPanel()
     fenetre.show()
