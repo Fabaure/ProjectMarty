@@ -27,9 +27,11 @@ def move_right():
     else:
         print("Marty is sadely not connected")
         return 0
-
-
-move_forward()
-for i in range(10):
-    move_left() 
-    move_right()
+    
+def move_dance():
+    if(marty.is_conn_ready):
+        print("Marty is well connected")
+        marty.dance()
+    else:
+        print("Marty is sadely not connected")
+        return 0

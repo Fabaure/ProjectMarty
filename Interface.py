@@ -2,6 +2,7 @@ import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel
 from PyQt6.QtCore import Qt
 from martypy import Marty
+from Movement import *
 
 class ControlPanel(QWidget):
     def __init__(self):
@@ -26,13 +27,13 @@ class ControlPanel(QWidget):
         layout.addWidget(self.btn_dance)
 
 
-        self.btn_dance.clicked.connect(lambda: self.action())
+        self.btn_forward.clicked.connect(lambda: move_forward())
+        self.btn_left.clicked.connect(lambda: move_left())
+        self.btn_right.clicked.connect(lambda: move_right())
+        self.btn_dance.clicked.connect(lambda: move_dance())
 
         self.setLayout(layout)
 
-
-    def action(self):
-        marty.dance()
 
 
 if __name__ == "__main__":
