@@ -43,3 +43,11 @@ def wiggle():
         print("Marty is sadely not connected")
         return 0
     return 0
+
+def eyes_control(angle,time_in_ms):
+    if(marty.is_conn_ready):
+        marty.eyes(angle,time_in_ms)
+    else:
+        print("Marty is sadely not connected")
+        return 0
+    return 0
