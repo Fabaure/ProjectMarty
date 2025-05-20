@@ -1,5 +1,3 @@
-from martypy import Marty
-
 def move_forward(marty):
     if(marty):
         print("Marty is well connected")
@@ -28,7 +26,7 @@ def move_right(marty):
 def move_dance(marty):
     if(marty):
         print("Marty is well connected")
-        marty.dance
+        marty.dance()
     else:
         print("Marty is sadely not connected")
         return 0
