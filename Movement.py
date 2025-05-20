@@ -1,7 +1,7 @@
 from martypy import Marty
 import time
 
-adresse_ip = "192.168.0.101" 
+adresse_ip = "192.168.0.100" 
 marty = Marty("wifi", adresse_ip) 
 
 def move_forward():
@@ -34,9 +34,6 @@ def move_backward():
         return 0
     return 0
 
-for i in range(10):
-    move_forward()
-    move_backward()
-for i in range(10):
-    move_left() 
-    move_right()
+
+
+rick_roll()
