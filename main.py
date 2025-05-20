@@ -2,7 +2,7 @@ from Interface import *
 from martypy import Marty, MartyConnectException
 
 if __name__ == "__main__":
-    adresse_ip = "192.168.0.108" 
+    adresse_ip = "192.168.0.100" 
     try:
         marty = Marty("wifi", adresse_ip) 
         print("Marty connecté !")
