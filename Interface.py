@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QSlider, QGroupBox, QGridLayout, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
+from PyQt6.QtWidgets import QApplication, QLineEdit, QSlider, QGroupBox, QGridLayout, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
 from PyQt6.QtCore import Qt
 from martypy import Marty, MartyConnectException
 from Movement import *
@@ -24,15 +24,17 @@ class ControlPanel(QWidget):
         robot_name = QLabel("Nom du robot")
         battery_label = QLabel("Battery : 100%")
         if(self.marty):
-            statut_robot = QPushButton("Connected")
-            statut_robot.setStyleSheet("background-color: #9FE855")
+            self.statut_robot = QPushButton("Connected")
+            self.statut_robot.setStyleSheet("background-color: #9FE855")
         else:
-            statut_robot = QPushButton("Disconnected")
-            statut_robot.setStyleSheet("background-color: #E57373")
+            self.statut_robot = QPushButton("Disconnected")
+            self.statut_robot.setStyleSheet("background-color: #E57373")
         robot_info.addWidget(robot_name)
         robot_info.addWidget(battery_label)
-        robot_info.addWidget(statut_robot)
+        robot_info.addWidget(self.statut_robot)
         top_layout.addLayout(robot_info)
+
+        self.statut_robot.clicked.connect(lambda: move_forward(self.marty))
 
         speed_slider = QSlider(Qt.Orientation.Horizontal)
         speed_slider.setMinimum(1)
@@ -126,9 +128,37 @@ class ControlPanel(QWidget):
         self.btn_excited.clicked.connect(lambda: excited(self.marty))
         self.btn_wiggle.clicked.connect(lambda: wiggle(self.marty))
         self.btn_eyes_control.clicked.connect(lambda: eyes_control(self.marty,45,100))
+        
+        self.label = QLabel("Adresse IP :")
+        self.input_field = QLineEdit()
+
+        self.button = QPushButton("Ok")
+        self.button.clicked.connect(self.connect)
+
+        layout.addWidget(self.label)
+        layout.addWidget(self.input_field)
+        layout.addWidget(self.button)
+
+        self.setLayout(layout)
+
 
         self.setLayout(layout)
         layout.addLayout(top_layout)
         layout.addLayout(middle_layout)
         layout.addLayout(bottom_layout)
 
+
+
+    def connect(self):
+        texte = self.input_field.text()
+        try:
+            marty = Marty("wifi", texte) 
+            print("Marty connecté !")
+            self.marty = marty
+            self.statut_robot.setText("Connected")
+            self.statut_robot.setStyleSheet("background-color: #9FE855")
+        except MartyConnectException as e:
+            print("Impossible de se connecter à Marty")
+            marty = None
+            self.statut_robot.setText("Disconnected")
+            self.statut_robot.setStyleSheet("background-color: #E57373")
