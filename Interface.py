@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QGroupBox, QGridLayout, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
+from PyQt6.QtWidgets import QApplication, QSlider, QGroupBox, QGridLayout, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
 from PyQt6.QtCore import Qt
 from martypy import Marty, MartyConnectException
 from Movement import *
@@ -29,20 +29,34 @@ class ControlPanel(QWidget):
         robot_info.addWidget(statut_robot)
         top_layout.addLayout(robot_info)
 
+        speed_slider = QSlider(Qt.Orientation.Horizontal)
+        speed_slider.setMinimum(1)
+        speed_slider.setMaximum(10)
+        speed_slider.setValue(5)
+        speed_label = QLabel("Speed")
+        speed_layout = QVBoxLayout()
+        speed_layout.addWidget(speed_label)
+        speed_layout.addWidget(speed_slider)
+        top_layout.addLayout(speed_layout)
 
-        button_layout = QGridLayout()
+        buttonM_layout = QGridLayout()
         self.btn_forward = QPushButton("Move forward")
         self.btn_backward = QPushButton("Move backward")
         self.btn_right = QPushButton("Move right")
         self.btn_left = QPushButton("Move left")
 
-        button_layout.addWidget(self.btn_forward,0,0)
-        button_layout.addWidget(self.btn_backward,0,1)
-        button_layout.addWidget(self.btn_right,1,0)
-        button_layout.addWidget(self.btn_left,1,1)
+        buttonM_layout.addWidget(self.btn_forward,0,0)
+        buttonM_layout.addWidget(self.btn_backward,0,1)
+        buttonM_layout.addWidget(self.btn_right,1,0)
+        buttonM_layout.addWidget(self.btn_left,1,1)
+
+        for i in range(buttonM_layout.count()):
+            widget = buttonM_layout.itemAt(i).widget()
+            if isinstance(widget, QPushButton):
+                widget.setFixedSize(300, 120)
 
         movement_box = QGroupBox("Controls")
-        movement_box.setLayout(button_layout)
+        movement_box.setLayout(buttonM_layout)
         middle_layout.addWidget(movement_box)
 
         self.btn_forward.clicked.connect(lambda: move_forward(self.marty))
@@ -56,10 +70,16 @@ class ControlPanel(QWidget):
         self.btn_kickL = QPushButton("Kick Left")
         self.btn_kickR = QPushButton("Kick Right")
 
-        anim_layout.addWidget(self.btn_dance)
-        anim_layout.addWidget(self.btn_celebrate)
-        anim_layout.addWidget(self.btn_kickL)
-        anim_layout.addWidget(self.btn_kickR)
+        anim_layout.addWidget(self.btn_dance, 0,0)
+        anim_layout.addWidget(self.btn_celebrate,0,1)
+        anim_layout.addWidget(self.btn_kickL,1,0)
+        anim_layout.addWidget(self.btn_kickR,1,1)
+
+
+        for i in range(anim_layout.count()):
+            widget = anim_layout.itemAt(i).widget()
+            if isinstance(widget, QPushButton):
+                widget.setFixedSize(300, 120)
 
         anim_box = QGroupBox("Animations")
         anim_box.setLayout(anim_layout)
