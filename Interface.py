@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import QApplication, QSlider, QGroupBox, QGridLayout, QWidg
 from PyQt6.QtCore import Qt
 from martypy import Marty, MartyConnectException
 from Movement import *
+from Expression import *
 
 class ControlPanel(QWidget):
     def __init__(self, marty):
@@ -22,8 +23,12 @@ class ControlPanel(QWidget):
         robot_info = QGridLayout()
         robot_name = QLabel("Nom du robot")
         battery_label = QLabel("Battery : 100%")
-        statut_robot = QPushButton("Disconnect")
-        statut_robot.setStyleSheet("background-color: #E57373")
+        if(self.marty):
+            statut_robot = QPushButton("Connected")
+            statut_robot.setStyleSheet("background-color: #9FE855")
+        else:
+            statut_robot = QPushButton("Disconnected")
+            statut_robot.setStyleSheet("background-color: #E57373")
         robot_info.addWidget(robot_name)
         robot_info.addWidget(battery_label)
         robot_info.addWidget(statut_robot)
@@ -60,7 +65,7 @@ class ControlPanel(QWidget):
         middle_layout.addWidget(movement_box)
 
         self.btn_forward.clicked.connect(lambda: move_forward(self.marty))
-        # self.btn_backward.clicked.connect()
+        self.btn_backward.clicked.connect(lambda: move_backward(self.marty))
         self.btn_left.clicked.connect(lambda: move_left(self.marty))
         self.btn_right.clicked.connect(lambda: move_right(self.marty))
 
@@ -80,7 +85,7 @@ class ControlPanel(QWidget):
         for i in range(anim_layout.count()):
             widget = anim_layout.itemAt(i).widget()
             if isinstance(widget, QPushButton):
-                widget.setFixedSize(300, 120)
+                widget.setFixedSize(150, 60)
 
         anim_box = QGroupBox("Animations")
         anim_box.setLayout(anim_layout)
@@ -91,7 +96,39 @@ class ControlPanel(QWidget):
         #self.btn_kickL.clicked.connect()
         #self.btn_kickR.clicked.connect()
 
+
+        emotion_layout = QGridLayout()
+
+        self.btn_angry = QPushButton("Angryy !")
+        self.btn_wide_open = QPushButton("Wide open")
+        self.btn_excited = QPushButton("Excited")
+        self.btn_wiggle = QPushButton("wiggle")
+        self.btn_eyes_control = QPushButton("Eyes control")
+
+        emotion_layout.addWidget(self.btn_angry, 0,1)
+        emotion_layout.addWidget(self.btn_wide_open,0,2)
+        emotion_layout.addWidget(self.btn_excited,1,0)
+        emotion_layout.addWidget(self.btn_wiggle,1,1)
+        emotion_layout.addWidget(self.btn_eyes_control,1,2)
+
+        for i in range(emotion_layout.count()):
+            widget = emotion_layout.itemAt(i).widget()
+            if isinstance(widget, QPushButton):
+                widget.setFixedSize(150, 60)
+
+
+        emotion_box = QGroupBox("Emotions")
+        emotion_box.setLayout(emotion_layout)
+        bottom_layout.addWidget(emotion_box)
+
+        self.btn_angry.clicked.connect(lambda: angry(self.marty))
+        self.btn_wide_open.clicked.connect(lambda: wide_open(self.marty))
+        self.btn_excited.clicked.connect(lambda: excited(self.marty))
+        self.btn_wiggle.clicked.connect(lambda: wiggle(self.marty))
+        self.btn_eyes_control.clicked.connect(lambda: eyes_control(self.marty,45,100))
+
         self.setLayout(layout)
         layout.addLayout(top_layout)
         layout.addLayout(middle_layout)
         layout.addLayout(bottom_layout)
+
