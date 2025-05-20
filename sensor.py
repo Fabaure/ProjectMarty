@@ -1,6 +1,6 @@
 def getColor(marty):
-    # recupere la couleure sous marty
-    color = marty.get_ground_sensor_reading("left") # lecture de la couleur
+    # gets the color of the object that Marty is standing on
+    color = marty.get_ground_sensor_reading("left") # reads the color
     print("Color : " + str(color))
     if(color < 19):
         print("Black")
@@ -18,8 +18,8 @@ def getColor(marty):
         print("Yellow")
 
 def getDistance(marty):
-    # recupere la distance devant marty
-    distance = marty.get_obstacle_sensor_reading("right") # recupere la distance en millimetres
+    # gets the distance in front of Marty
+    distance = marty.get_obstacle_sensor_reading("right") # reads the distance in millimetres
     print("Distance : " + str(distance))
     if(distance != 0):
         print("Obstacle : Yes")
@@ -27,7 +27,7 @@ def getDistance(marty):
         print("Obstacle : No")
 
 def getBattery(marty):
-    # recupere le pourcentage de la batterie de marty
+    # gets the remaining battery life 
     battery = marty.get_battery_remaining()
     print("Battery : " + str(battery) + "%")
     
