@@ -60,6 +60,7 @@ class ControlPanel(QWidget):
         middle_layout.addWidget(movement_box)
 
         self.btn_forward.clicked.connect(lambda: move_forward(self.marty))
+        # self.btn_backward.clicked.connect()
         self.btn_left.clicked.connect(lambda: move_left(self.marty))
         self.btn_right.clicked.connect(lambda: move_right(self.marty))
 
@@ -84,6 +85,11 @@ class ControlPanel(QWidget):
         anim_box = QGroupBox("Animations")
         anim_box.setLayout(anim_layout)
         bottom_layout.addWidget(anim_box)
+
+        self.btn_dance.clicked.connect(lambda: move_dance(self.marty))
+        #self.btn_celebrate.clicked.connect()
+        #self.btn_kickL.clicked.connect()
+        #self.btn_kickR.clicked.connect()
 
         self.setLayout(layout)
         layout.addLayout(top_layout)
