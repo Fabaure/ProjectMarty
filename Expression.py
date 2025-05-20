@@ -1,6 +1,6 @@
 from martypy import Marty
 import time
-adresse_ip = "192.168.0.101" 
+adresse_ip = "192.168.0.100" 
 marty = Marty("wifi", adresse_ip) 
 
 
@@ -44,3 +44,17 @@ def eyes_control(angle,time_in_ms):
         return 0
     return 0
 
+def color_control(color,pattern,time_set):
+    if(marty.is_conn_ready):
+        marty.disco_pattern(int(pattern))
+        marty.disco_color(color)
+        time.sleep(int(time_set))
+    else:
+        print("Marty is sadely not connected")
+        return 0
+    return 0
+
+color = input("What color did you want? : ")
+pattern = input("Which pattern did you prefer between 1 and 2 ? : ")
+time_set = input("For how much time did you want it? : ")
+color_control(color,pattern,time_set)
