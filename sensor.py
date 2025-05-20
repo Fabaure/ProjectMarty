@@ -14,7 +14,7 @@ def getColor(marty):
         print("Red")
     elif(color > 90 and color < 110):
         print("Magenta")
-    elif(color > 180 and color < 200):
+    elif(color > 180 and color < 205):
         print("Yellow")
 
 def getDistance(marty):
