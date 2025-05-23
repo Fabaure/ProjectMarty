@@ -1,28 +1,26 @@
 import msvcrt
 import time
-import keyboard
 from martypy import Marty
 from sensor import *
 from movement import *
 
-def handle_key_events(marty):
+def handle_key_events(marty, key):
     # verify if a key is pressed and do the according action
-    if (keyboard.is_pressed("e") or keyboard.is_pressed("E")):
+    if (key == b'e' or key == b'E'):
         getColor(marty)
         getDistance(marty)
         getBattery(marty)
         print("--------------")
         time.sleep(0.1)  # stop spam
-    if (keyboard.is_pressed("z") or keyboard.is_pressed("Z")):
+    if (key == b'z' or key == b'Z'):
         move_forward(marty)
-    elif (keyboard.is_pressed("s") or keyboard.is_pressed("S")):
+    elif (key == b's' or key == b'S'):
         move_backward(marty)
-    elif (keyboard.is_pressed("q") or keyboard.is_pressed("Q")):
+    elif (key == b'q' or key == b'Q'):
         move_left(marty)
-    elif (keyboard.is_pressed("d") or keyboard.is_pressed("D")):
+    elif (key == b'd' or key == b'D'):
         move_right(marty)
-    else:
-        marty.stop("clear and stop")  # stops movement if no key is pressed
+
 
 
 def main():
@@ -35,18 +33,60 @@ def main():
         print("Connected to Marty !")
         running = True
         while(marty.is_conn_ready() and running): # loop if Maty is connected
-            if (keyboard.is_pressed("a") or keyboard.is_pressed("A")):
-                # if the A key is pressed then stop the program
-                print("Touche A détectée, arrêt.")
-                running = False
+            if (msvcrt.kbhit()):  # a key of the keyboard is pressed
+                key = msvcrt.getch() # get the key that was pressed
+                while msvcrt.kbhit():
+                    msvcrt.getch()
+                if (key == b'a' or key == b'A'):
+                    # if the A key is pressed then stop the program
+                    print("Touche A détectée, arrêt.")
+                    running = False
+                else:
+                    handle_key_events(marty, key)
+                    time.sleep(0.5)
             else:
-                handle_key_events(marty)
-            time.sleep(0.1) # stop le spam
+                marty.stop('clear queue') # stops movement if no key is pressed
+                time.sleep(0.5) # stop spamming of keys
         print("Disconnected from Marty.")
         marty.close() # deconnection of Marty
+
     else: 
         # if Marty isn't connected
         print("Failed to connect to Marty T-T.")
 
 if __name__ == "__main__":
     main()
+
+
+
+    # pour le clavier 
+    '''running = True
+        while(marty.is_conn_ready() and running): # loop if Maty is connected
+            if (msvcrt.kbhit()):  # a key of the keyboard is pressed
+                key = msvcrt.getch() # get the key that was pressed
+                while msvcrt.kbhit():
+                    msvcrt.getch()
+                if (key == b'a' or key == b'A'):
+                    # if the A key is pressed then stop the program
+                    print("Touche A détectée, arrêt.")
+                    running = False
+                else:
+                    handle_key_events(marty, key)
+                    time.sleep(0.5)
+            else:
+                marty.stop('clear queue') # stops movement if no key is pressed
+                time.sleep(0.5) # stop spamming of keys
+        print("Disconnected from Marty.")
+        marty.close() # deconnection of Marty'''
+    
+        # mouvement seul
+    '''getBattery(marty)
+        if(getDistance(marty) == True):
+             move_forward(marty)
+        if(getDistance(marty) == False):
+            print('obstacle')
+            move_backward(marty)
+            move_backward(marty)
+            move_left(marty)
+            move_left(marty)
+            move_left(marty)'''

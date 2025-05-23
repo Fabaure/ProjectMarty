@@ -8,26 +8,25 @@ def getColor(marty):
         print("Blue")
     elif(color > 27 and color < 37):
         print("Green")
-    elif(color > 45 and color < 57):
+    elif(color > 38 and color < 57):
         print("Cyan")
-    elif(color > 75 and color < 90):
+    elif(color > 64 and color < 90):
         print("Red")
     elif(color > 90 and color < 110):
         print("Magenta")
-    elif(color > 180 and color < 205):
+    elif(color > 145 and color < 205):
         print("Yellow")
 
-def getDistance(marty):
+def getDistance(marty)-> bool:
     # gets the distance in front of Marty
     distance = marty.get_obstacle_sensor_reading("right") # reads the distance in millimetres
     print("Distance : " + str(distance))
-    if(distance != 0):
-        print("Obstacle : Yes")
+    if(distance < 10):
+        return True
     else:
-        print("Obstacle : No")
+        return False
 
 def getBattery(marty):
     # gets the remaining battery life 
     battery = marty.get_battery_remaining()
     print("Battery : " + str(battery) + "%")
-    
