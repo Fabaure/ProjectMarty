@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt
 from martypy import Marty, MartyConnectException
 from Movement import *
 from Expression import *
+from sensor import *
 
 class ControlPanel(QWidget):
     def __init__(self, marty):
@@ -21,30 +22,16 @@ class ControlPanel(QWidget):
         bottom_layout = QHBoxLayout()
 
         robot_info = QGridLayout()
-        robot_name = QLabel("Nom du robot")
-        battery_label = QLabel("Battery : 100%")
-        if(self.marty):
-            self.statut_robot = QPushButton("Connected")
-            self.statut_robot.setStyleSheet("background-color: #9FE855")
-        else:
-            self.statut_robot = QPushButton("Disconnected")
-            self.statut_robot.setStyleSheet("background-color: #E57373")
-        robot_info.addWidget(robot_name)
-        robot_info.addWidget(battery_label)
+        self.robot_name = QLabel("Name : None" )
+        self.battery_label = QLabel("Battery : None")
+        self.statut_robot = QPushButton("Disconnected")
+        self.statut_robot.setStyleSheet("background-color: #E57373")
+        robot_info.addWidget(self.robot_name)
+        robot_info.addWidget(self.battery_label)
         robot_info.addWidget(self.statut_robot)
         top_layout.addLayout(robot_info)
 
         self.statut_robot.clicked.connect(lambda: move_forward(self.marty))
-
-        speed_slider = QSlider(Qt.Orientation.Horizontal)
-        speed_slider.setMinimum(1)
-        speed_slider.setMaximum(10)
-        speed_slider.setValue(5)
-        speed_label = QLabel("Speed")
-        speed_layout = QVBoxLayout()
-        speed_layout.addWidget(speed_label)
-        speed_layout.addWidget(speed_slider)
-        top_layout.addLayout(speed_layout)
 
         buttonM_layout = QGridLayout()
         self.btn_forward = QPushButton("Move forward")
@@ -129,20 +116,38 @@ class ControlPanel(QWidget):
         self.btn_wiggle.clicked.connect(lambda: wiggle(self.marty))
         self.btn_eyes_control.clicked.connect(lambda: eyes_control(self.marty,45,100))
         
+
+        connexion_layout = QGridLayout()
         self.label = QLabel("Adresse IP :")
         self.input_field = QLineEdit()
 
         self.button = QPushButton("Ok")
         self.button.clicked.connect(self.connect)
+        connexion_layout.addWidget(self.label)
+        connexion_layout.addWidget(self.input_field)
+        connexion_layout.addWidget(self.button)
+        connexion = QGroupBox("Connexion")
+        connexion.setLayout(connexion_layout)
+        top_layout.addWidget(connexion)
+
+        '''
+        self.color_square = QLabel()
+        self.color_square.setFixedSize(200, 200)
+        self.color_square.setAutoFillBackground(True)
+
+        layout.addWidget(self.color_square, alignment=Qt.AlignmentFlag.AlignCenter)
+        self.setLayout(layout)
+
+        self.update_color("gray")
+
 
         layout.addWidget(self.label)
         layout.addWidget(self.input_field)
         layout.addWidget(self.button)
-
+        '''
         self.setLayout(layout)
 
 
-        self.setLayout(layout)
         layout.addLayout(top_layout)
         layout.addLayout(middle_layout)
         layout.addLayout(bottom_layout)
@@ -157,8 +162,12 @@ class ControlPanel(QWidget):
             self.marty = marty
             self.statut_robot.setText("Connected")
             self.statut_robot.setStyleSheet("background-color: #9FE855")
+            self.robot_name.setText("Name : " + getName(self.marty))
+            self.battery_label.setText("Battery : " + getBattery(self.marty) + " %")
         except MartyConnectException as e:
             print("Impossible de se connecter à Marty")
             marty = None
             self.statut_robot.setText("Disconnected")
             self.statut_robot.setStyleSheet("background-color: #E57373")
+            self.robot_name.setText("Name : None")
+            self.battery_label.setText("Battery : None ")
