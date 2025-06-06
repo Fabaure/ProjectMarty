@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 from Movement import *
+from Expression import *
 
 def itemModification(menu_widget: QListWidget, index: int, newText: str):
     if 0 <= index < menu_widget.count():
@@ -25,7 +26,7 @@ class CreationPanel(QWidget):
         self.marty = marty
         self.menu_widget = QListWidget()
 
-        for i in range(6):
+        for i in range(10):
             item = QListWidgetItem(f"Item {i}")
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.menu_widget.addItem(item)
@@ -43,7 +44,14 @@ class CreationPanel(QWidget):
         itemModification(self.menu_widget, 2, "TournerDroite")
         itemModification(self.menu_widget, 3, "TournerGauche")
         itemModification(self.menu_widget, 4, "Dancer")
-        itemModification(self.menu_widget, 5, "Emotion")
+        itemModification(self.menu_widget, 5, "Celebration")
+        itemModification(self.menu_widget, 6, "PiedGauche")
+        itemModification(self.menu_widget, 7, "PiedDroit")
+        itemModification(self.menu_widget, 8, "Colere")
+        itemModification(self.menu_widget, 9, "Exitation")
+        itemModification(self.menu_widget, 10, "Chokbar")
+        itemModification(self.menu_widget, 11, "Gigote")
+
 
         self.menu_widget.itemClicked.connect(self.addingCommand)
 
@@ -122,5 +130,27 @@ class CreationPanel(QWidget):
         print("Dancer -> envoyer")
         move_dance(self.marty)
 
-    def emotion(self):
-        print("Emotion -> envoyer")
+    def celebration(self):
+        print("Celebration -> envoyer")
+
+    def piedgauche(self):
+        print("PiedGauche -> envoyer")
+
+    def pieddroit(self):
+        print("PiedDroit -> envoyer")
+    
+    def colere(self):
+        print("Colere -> envoyer")
+        angry(self.marty)
+
+    def exitation(self):
+        print("Exitation -> envoyer")
+        excited(self.marty)
+
+    def chokbar(self):
+        print("Chokbar -> envoyer")
+        wide_open(self.marty)
+
+    def gigote(self):
+        print("Gigote -> envoyer")
+        wiggle(self.marty)
