@@ -1,23 +1,35 @@
 from martypy import Marty, MartyConnectException
 
 def getColor(marty):
+    couleur = ""
     # gets the color of the object that Marty is standing on
     color = marty.get_ground_sensor_reading("left") # reads the color
     print("Color : " + str(color))
     if(color < 19):
-        print("Black")
+        couleur = "black"
+        return couleur
     elif(color > 19 and color < 27):
-        print("Blue")
+        couleur = "blue"
+        return couleur
     elif(color > 27 and color < 37):
-        print("Green")
+        couleur = "green"
+        return couleur
     elif(color > 45 and color < 57):
-        print("Cyan")
+        couleur = "cyan"
+        return couleur
     elif(color > 75 and color < 90):
-        print("Red")
+        couleur = "red"
+        return couleur
     elif(color > 90 and color < 110):
-        print("Magenta")
+        couleur = "magenta"
+        return couleur
     elif(color > 180 and color < 205):
-        print("Yellow")
+        couleur = "yellow"
+        return couleur
+    return "gray"
+
+
+
 
 def getDistance(marty):
     # gets the distance in front of Marty

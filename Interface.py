@@ -1,5 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QLineEdit, QSlider, QGroupBox, QGridLayout, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
+from PyQt6.QtGui import QColor, QPalette
 from PyQt6.QtCore import Qt
 from martypy import Marty, MartyConnectException
 from Movement import *
@@ -30,8 +31,6 @@ class ControlPanel(QWidget):
         robot_info.addWidget(self.battery_label)
         robot_info.addWidget(self.statut_robot)
         top_layout.addLayout(robot_info)
-
-        self.statut_robot.clicked.connect(lambda: move_forward(self.marty))
 
         buttonM_layout = QGridLayout()
         self.btn_forward = QPushButton("Move forward")
@@ -130,29 +129,29 @@ class ControlPanel(QWidget):
         connexion.setLayout(connexion_layout)
         top_layout.addWidget(connexion)
 
-        '''
+        
         self.color_square = QLabel()
         self.color_square.setFixedSize(200, 200)
         self.color_square.setAutoFillBackground(True)
 
-        layout.addWidget(self.color_square, alignment=Qt.AlignmentFlag.AlignCenter)
+        couleur_layout = QGridLayout()
+        self.btn_couleur = QPushButton("Couleur")
+        couleur_layout.addWidget(self.color_square)
+        couleur_layout.addWidget(self.btn_couleur)
+
+        self.btn_couleur.clicked.connect(lambda: self.update_color(self.marty))
+        
+        box_couleur = QGroupBox("Couleur")
+        box_couleur.setLayout(couleur_layout)
+        bottom_layout.addWidget(box_couleur)
+        
+        self.color_square.setPalette(QPalette(QColor("gray")))
+
         self.setLayout(layout)
-
-        self.update_color("gray")
-
-
-        layout.addWidget(self.label)
-        layout.addWidget(self.input_field)
-        layout.addWidget(self.button)
-        '''
-        self.setLayout(layout)
-
 
         layout.addLayout(top_layout)
         layout.addLayout(middle_layout)
         layout.addLayout(bottom_layout)
-
-
 
     def connect(self):
         texte = self.input_field.text()
@@ -164,10 +163,20 @@ class ControlPanel(QWidget):
             self.statut_robot.setStyleSheet("background-color: #9FE855")
             self.robot_name.setText("Name : " + getName(self.marty))
             self.battery_label.setText("Battery : " + getBattery(self.marty) + " %")
-        except MartyConnectException as e:
+        except MartyConnectException:
             print("Impossible de se connecter à Marty")
             marty = None
             self.statut_robot.setText("Disconnected")
             self.statut_robot.setStyleSheet("background-color: #E57373")
             self.robot_name.setText("Name : None")
             self.battery_label.setText("Battery : None ")
+
+    def update_color(self, marty):
+        if(self.marty):
+            color_str = getColor(marty)
+            color = QColor(color_str)
+            palette = self.color_square.palette()
+            palette.setColor(QPalette.ColorRole.Window, color)
+            self.color_square.setPalette(palette)
+        else:
+            return None
