@@ -11,7 +11,11 @@ class ControlPanel(QWidget):
         super().__init__()
         self.marty = marty
         self.setWindowTitle("Interface de pilotage du robot Marty")
-        self.setFixedSize(1000, 800)
+
+        self.setStyleSheet("""
+            QPushButton { background-color: #fff; padding: 15px; font-size: 15px; border-radius:10px }
+        """)
+
         self.interface()
 
     def interface(self):
