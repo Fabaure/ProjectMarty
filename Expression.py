@@ -1,7 +1,7 @@
 from martypy import Marty
 import time
-adresse_ip = "192.168.0.100" 
-marty = Marty("wifi", adresse_ip) 
+addresse_ip = "192.168.0.101" 
+marty = Marty("wifi", addresse_ip) 
 
 
 def angry():
@@ -54,7 +54,17 @@ def color_control(color,pattern,time_set):
         return 0
     return 0
 
-color = input("What color did you want? : ")
-pattern = input("Which pattern did you prefer between 1 and 2 ? : ")
-time_set = input("For how much time did you want it? : ")
-color_control(color,pattern,time_set)
+def feel_control(color,emotion):
+    if(marty.is_conn_ready):
+        marty.disco_color(color)
+        marty.eyes(emotion,500)
+        time.sleep(2)
+        marty.disco_color(000000)
+    else:
+        print("Marty is sadely not connected")
+        return 0
+    return 0
+
+feel_control("4080ff","wiggle")
+
+marty.close()
