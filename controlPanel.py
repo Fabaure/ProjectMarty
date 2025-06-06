@@ -12,25 +12,13 @@ class ControlPanel(QWidget):
         super().__init__()
         self.marty = marty
         self.setWindowTitle("Interface de pilotage du robot Marty")
-        self.setFixedSize(1000, 800)
         self.interface()
 
     def interface(self):
         layout = QVBoxLayout()
 
-        top_layout = QHBoxLayout()
         middle_layout = QHBoxLayout()
         bottom_layout = QHBoxLayout()
-
-        robot_info = QGridLayout()
-        self.robot_name = QLabel("Name : None" )
-        self.battery_label = QLabel("Battery : None")
-        self.statut_robot = QPushButton("Disconnected")
-        self.statut_robot.setStyleSheet("background-color: #E57373")
-        robot_info.addWidget(self.robot_name)
-        robot_info.addWidget(self.battery_label)
-        robot_info.addWidget(self.statut_robot)
-        top_layout.addLayout(robot_info)
 
         buttonM_layout = QGridLayout()
         self.btn_forward = QPushButton("Move forward")
@@ -114,20 +102,6 @@ class ControlPanel(QWidget):
         self.btn_excited.clicked.connect(lambda: excited(self.marty))
         self.btn_wiggle.clicked.connect(lambda: wiggle(self.marty))
         self.btn_eyes_control.clicked.connect(lambda: eyes_control(self.marty,45,100))
-        
-
-        connexion_layout = QGridLayout()
-        self.label = QLabel("Adresse IP :")
-        self.input_field = QLineEdit()
-
-        self.button = QPushButton("Ok")
-        self.button.clicked.connect(self.connect)
-        connexion_layout.addWidget(self.label)
-        connexion_layout.addWidget(self.input_field)
-        connexion_layout.addWidget(self.button)
-        connexion = QGroupBox("Connexion")
-        connexion.setLayout(connexion_layout)
-        top_layout.addWidget(connexion)
 
         
         self.color_square = QLabel()
@@ -149,7 +123,6 @@ class ControlPanel(QWidget):
 
         self.setLayout(layout)
 
-        layout.addLayout(top_layout)
         layout.addLayout(middle_layout)
         layout.addLayout(bottom_layout)
 
