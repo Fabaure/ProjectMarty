@@ -21,30 +21,6 @@ class ControlPanel(QWidget):
         middle_layout = QHBoxLayout()
         bottom_layout = QHBoxLayout()
 
-        robot_info = QGridLayout()
-        robot_name = QLabel("Nom du robot")
-        battery_label = QLabel("Battery : 100%")
-        if self.marty:
-            statut_robot = QPushButton("Connected")
-            statut_robot.setStyleSheet("background-color: #9FE855")
-        else:
-            statut_robot = QPushButton("Disconnected")
-            statut_robot.setStyleSheet("background-color: #E57373")
-        robot_info.addWidget(robot_name)
-        robot_info.addWidget(battery_label)
-        robot_info.addWidget(statut_robot)
-        top_layout.addLayout(robot_info)
-
-        speed_slider = QSlider(Qt.Orientation.Horizontal)
-        speed_slider.setMinimum(1)
-        speed_slider.setMaximum(10)
-        speed_slider.setValue(5)
-        speed_label = QLabel("Speed")
-        speed_layout = QVBoxLayout()
-        speed_layout.addWidget(speed_label)
-        speed_layout.addWidget(speed_slider)
-        top_layout.addLayout(speed_layout)
-
         buttonM_layout = QGridLayout()
         self.btn_forward = QPushButton("Move forward")
         self.btn_backward = QPushButton("Move backward")

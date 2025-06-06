@@ -9,8 +9,12 @@ class MainWindow(QWidget):
     def __init__(self, marty):
         super().__init__()
         self.marty = marty
-        self.control_panel = ControlPanel(marty)
-        self.creation_panel = CreationPanel(marty)
+        self.interface()
+
+    def interface(self):
+
+        self.control_panel = ControlPanel(self.marty)
+        self.creation_panel = CreationPanel(self.marty)
 
         self.stack = QStackedWidget()
         self.stack.addWidget(self.control_panel)
@@ -18,7 +22,6 @@ class MainWindow(QWidget):
 
         self.btn_control = QPushButton("Control Panel")
         self.btn_creation = QPushButton("Creation Panel")
-
 
         connexion_layout = QGridLayout()
         self.label = QLabel("Adresse IP :")
@@ -45,7 +48,6 @@ class MainWindow(QWidget):
         robot_info.addWidget(self.battery_label)
         robot_info.addWidget(self.statut_robot)
         
-
 
         self.btn_control.clicked.connect(lambda: self.stack.setCurrentIndex(0))
         self.btn_creation.clicked.connect(lambda: self.stack.setCurrentIndex(1))
@@ -74,6 +76,7 @@ class MainWindow(QWidget):
             self.statut_robot.setStyleSheet("background-color: #9FE855")
             self.robot_name.setText("Name : " + getName(self.marty))
             self.battery_label.setText("Battery : " + getBattery(self.marty) + " %")
+            self.updateMarty(marty)
         except MartyConnectException:
             print("Impossible de se connecter à Marty")
             marty = None
@@ -81,4 +84,19 @@ class MainWindow(QWidget):
             self.statut_robot.setStyleSheet("background-color: #E57373")
             self.robot_name.setText("Name : None")
             self.battery_label.setText("Battery : None ")
+    
+    def updateMarty(self, marty):
+        # Remove old panels
+        self.stack.removeWidget(self.control_panel)
+        self.stack.removeWidget(self.creation_panel)
+
+        # Create new panels with the updated marty
+        self.control_panel = ControlPanel(marty)
+        self.creation_panel = CreationPanel(marty)
+
+        # Add new panels
+        self.stack.addWidget(self.control_panel)
+        self.stack.addWidget(self.creation_panel)
+
+
 
