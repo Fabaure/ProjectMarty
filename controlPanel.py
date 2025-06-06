@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QLineEdit, QSlider, QGroupBox, QGridLayout, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel
+from PyQt6.QtWidgets import QApplication, QLineEdit, QSlider, QGroupBox, QGridLayout, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QColorDialog, QDialog
 from PyQt6.QtGui import QColor, QPalette
 from PyQt6.QtCore import Qt
 from martypy import Marty, MartyConnectException
@@ -80,12 +80,14 @@ class ControlPanel(QWidget):
         self.btn_excited = QPushButton("Excited")
         self.btn_wiggle = QPushButton("wiggle")
         self.btn_eyes_control = QPushButton("Eyes control")
+        self.open_dialog_btn = QPushButton("Ouvrir contrôle couleur")
 
-        emotion_layout.addWidget(self.btn_angry, 0,1)
-        emotion_layout.addWidget(self.btn_wide_open,0,2)
-        emotion_layout.addWidget(self.btn_excited,1,0)
-        emotion_layout.addWidget(self.btn_wiggle,1,1)
-        emotion_layout.addWidget(self.btn_eyes_control,1,2)
+        emotion_layout.addWidget(self.btn_angry, 0,0)
+        emotion_layout.addWidget(self.btn_wide_open,0,1)
+        emotion_layout.addWidget(self.btn_excited,0,2)
+        emotion_layout.addWidget(self.btn_wiggle,1,0)
+        emotion_layout.addWidget(self.btn_eyes_control,1,1)
+        emotion_layout.addWidget(self.open_dialog_btn, 1,2)
 
         for i in range(emotion_layout.count()):
             widget = emotion_layout.itemAt(i).widget()
@@ -102,6 +104,7 @@ class ControlPanel(QWidget):
         self.btn_excited.clicked.connect(lambda: excited(self.marty))
         self.btn_wiggle.clicked.connect(lambda: wiggle(self.marty))
         self.btn_eyes_control.clicked.connect(lambda: eyes_control(self.marty,45,100))
+        self.open_dialog_btn.clicked.connect(self.open_color_control)
 
         
         self.color_square = QLabel()
@@ -153,3 +156,52 @@ class ControlPanel(QWidget):
             self.color_square.setPalette(palette)
         else:
             return None
+
+    def open_color_control(self):
+        dialog = ColorControlDialog(self.marty)
+        dialog.exec()
+
+class ColorControlDialog(QDialog):
+    def __init__(self, marty):
+        super().__init__()
+        self.marty = marty
+        self.setWindowTitle("Contrôle de Couleur")
+        self.setGeometry(100, 100, 300, 200)
+
+        layout = QVBoxLayout()
+
+        self.color_label = QLabel("Couleur : aucune")
+        layout.addWidget(self.color_label)
+
+        self.choose_color_btn = QPushButton("Choisir une couleur")
+        self.choose_color_btn.clicked.connect(self.choose_color)
+        layout.addWidget(self.choose_color_btn)
+
+        self.pattern_input = QLineEdit()
+        self.pattern_input.setPlaceholderText("Entrer le pattern (1 ou 2)")
+        layout.addWidget(self.pattern_input)
+
+        self.time_input = QLineEdit()
+        self.time_input.setPlaceholderText("Entrer le temps (secondes)")
+        layout.addWidget(self.time_input)
+
+        self.submit_btn = QPushButton("Lancer")
+        self.submit_btn.clicked.connect(self.submit)
+        layout.addWidget(self.submit_btn)
+
+        self.setLayout(layout)
+        self.color = "#000000"
+
+    def choose_color(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.color = color.name()
+            self.color_label.setText(f"Couleur : {self.color}")
+            self.color_sans_hass = self.color.lstrip("#")
+            print(self.color_sans_hass)
+
+    def submit(self):
+        pattern = self.pattern_input.text()
+        time_set = self.time_input.text()
+        if pattern and time_set:
+            color_control(self.marty, self.color_sans_hass, pattern, time_set)
