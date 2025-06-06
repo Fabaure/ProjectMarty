@@ -3,19 +3,19 @@ def getColor(marty):
     color = marty.get_ground_sensor_reading("left") # reads the color
     print("Color : " + str(color))
     if(color < 19):
-        print("Black")
+        return "black"
     elif(color > 19 and color < 27):
-        print("Blue")
+        return "blue"
     elif(color > 27 and color < 37):
-        print("Green")
+        return "green"
     elif(color > 38 and color < 57):
-        print("Cyan")
+        return "cyan"
     elif(color > 64 and color < 90):
-        print("Red")
+        return "red"
     elif(color > 90 and color < 110):
-        print("Magenta")
+        return "magenta"
     elif(color > 145 and color < 205):
-        print("Yellow")
+        return "yellow"
 
 def getDistance(marty)-> bool:
     # gets the distance in front of Marty
