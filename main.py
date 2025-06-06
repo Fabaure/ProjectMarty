@@ -1,17 +1,8 @@
-from martypy import Marty
+from mainWindow import *
+from martypy import Marty, MartyConnectException
 
-adresse_ip = "192.168.0.101" # à modifier
-marty = Marty("wifi", adresse_ip) # connexion à Marty
-
-if (marty.is_conn_ready()): 
-    # si Marty est connecté
-    print("Connected to Marty!")
-    while(marty.is_conn_ready()): # boucle si Marty connecté
-        print("Il danse !")
-        marty.dance() # exemple
-        # code a faire
-        marty.close() # deconnesion de Marty
-        print("Disconnected from Marty.")
-else: 
-    # si Marty n'est pas connecté
-    print("Failed to connect to Marty T-T.")
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    fenetre = MainWindow(None)
+    fenetre.show()
+    app.exec()
