@@ -16,6 +16,7 @@ def getColor(marty):
         return "magenta"
     elif(color > 145 and color < 205):
         return "yellow"
+    return "no_color"
 
 def getDistance(marty)-> bool:
     # gets the distance in front of Marty
