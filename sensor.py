@@ -8,22 +8,22 @@ def getColor(marty):
     if(color < 19):
         couleur = "black"
         return couleur
-    elif(color > 19 and color < 27):
+    elif(color > 19 and color < 24):
         couleur = "blue"
         return couleur
-    elif(color > 27 and color < 37):
+    elif(color > 25 and color < 37):
         couleur = "green"
         return couleur
-    elif(color > 45 and color < 57):
+    elif(color > 38 and color < 59):
         couleur = "cyan"
         return couleur
-    elif(color > 75 and color < 90):
+    elif(color > 60 and color < 80):
         couleur = "red"
         return couleur
-    elif(color > 90 and color < 110):
+    elif(color > 80 and color < 129):
         couleur = "magenta"
         return couleur
-    elif(color > 180 and color < 205):
+    elif(color > 130 and color < 205):
         couleur = "yellow"
         return couleur
     return "gray"
