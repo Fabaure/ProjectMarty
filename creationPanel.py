@@ -30,14 +30,6 @@ class CreationPanel(QWidget):
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.menu_widget.addItem(item)
 
-        self.setStyleSheet("""
-            QListWidget { color: #FFFFFF; background-color: #33373B; }
-            QListWidget::item { height: 50px; }
-            QListWidget::item:selected { background-color: #2ABf9E; }
-            QLabel { background-color: #FFFFFF; qproperty-alignment: AlignCenter; }
-            QPushButton { background-color: #2ABf9E; padding: 20px; font-size: 18px; }
-        """)
-
         itemModification(self.menu_widget, 0, "Avancer")
         itemModification(self.menu_widget, 1, "Reculer")
         itemModification(self.menu_widget, 2, "TournerDroite")
