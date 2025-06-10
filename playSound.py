@@ -33,26 +33,37 @@ def rick_roll(marty):
 
 
 def playChoosenSound(marty, choosenMusic):
-    marty.set_blocking(False)
-    print(marty.is_blocking())
-    if(marty.is_conn_ready):
-        marty.set_volume(15)
-        try:
-            success = marty.send_file(choosenMusic, progress_callback, file_dest="fs")
-            if success:
-                print("Fichier envoyé avec succès ")
-            else:
-                print("Envoi du fichier interrompu ")
-        except Exception as e:
-            print(f"Erreur pendant l'envoi : {e}")
-        marty.play_mp3(choosenMusic)
-        for i in range (10):
-            marty.sidestep("left",1,35,500,)
-            marty.arms(45,-45,500)
-            marty.sidestep("right",1,35,500,)
-            marty.arms(-45,45,500)
-    else:
-        print("Marty is sadely not connected")
-        return 0
-    marty.set_blocking(True)
+    if(marty):
+        marty.set_blocking(False)
+        print(marty.is_blocking())
+        if(marty.is_conn_ready):
+            marty.set_volume(15)
+            try:
+                success = marty.send_file(choosenMusic, progress_callback, file_dest="fs")
+                if success:
+                    print("Fichier envoyé avec succès ")
+                else:
+                    print("Envoi du fichier interrompu ")
+            except Exception as e:
+                print(f"Erreur pendant l'envoi : {e}")
+            marty.play_mp3(choosenMusic)
+            for i in range (10):
+                marty.sidestep("left",1,35,500,)
+                marty.arms(45,-45,500)
+                marty.sidestep("right",1,35,500,)
+                marty.arms(-45,45,500)
+        else:
+            print("Marty is sadely not connected")
+            return 0
+        marty.set_blocking(True)
     return 0
+
+def setVolumeFromInput(marty, choosenVolume): 
+    if marty :
+        if(marty.is_conn_ready):
+            marty.set_volume(choosenVolume)
+            print("Nouveau volume")
+        else :
+            print("Marty is sadely not connected")
+            return 0
+        return 0
