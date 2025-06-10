@@ -12,13 +12,6 @@ class MainWindow(QWidget):
         self.marty = marty
         self.interface()
 
-        self.setStyleSheet("""
-            QPushButton { padding: 5px;  border-radius:10px; background-color: #fff; }
-            QPushButton:pressed { background-color: #404040; color: #fff }
-            QGroupBox { font-size: 18px }
-            
-        """)
-
 
     def interface(self):
 
