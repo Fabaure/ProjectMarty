@@ -34,7 +34,7 @@ class CreationPanel(QWidget):
         self.setStyleSheet("""
             QListWidget { color: #FFFFFF; background-color: #222c34; }
             QListWidget::item { height: 50px; }
-            QListWidget::item:selected { background-color: #222c34; }
+            QListWidget::item:selected { background-color: #222c34 }
             QLabel { background-color: #FFFFFF; qproperty-alignment: AlignCenter; border-radius:10px}
             QPushButton { background-color: #d6adff; padding: 20px; font-size: 18px; border-radius:10px}
         """)
