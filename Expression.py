@@ -12,7 +12,7 @@ def angry():
         return 0
     return 0
 
-def wide_open():
+def wide_open(): # Open marty's eyes.
     if(marty.is_conn_ready):
         marty.eyes("wide",500)
     else:
@@ -20,7 +20,7 @@ def wide_open():
         return 0
     return 0
 
-def excited():
+def excited(): # Create an excited expression on marty's face
     if(marty.is_conn_ready):
         marty.eyes("excited",500)
     else:
@@ -28,7 +28,7 @@ def excited():
         return 0
     return 0
 
-def wiggle():
+def wiggle(): # Make marty's eyes wiggle
     if(marty.is_conn_ready):
         marty.eyes("wiggle",1000)
     else:
@@ -36,7 +36,7 @@ def wiggle():
         return 0
     return 0
 
-def eyes_control(angle,time_in_ms):
+def eyes_control(angle,time_in_ms): # Permit to controle angle and duration of marty's eyes movements
     if(marty.is_conn_ready):
         marty.eyes(angle,time_in_ms)
     else:
@@ -44,7 +44,7 @@ def eyes_control(angle,time_in_ms):
         return 0
     return 0
 
-def color_control(color,pattern,time_set):
+def color_control(color,pattern,time_set): # Permit to different color, pattern and duration for marty's eyes movements
     if(marty.is_conn_ready):
         marty.disco_pattern(int(pattern))
         marty.disco_color(color)
@@ -54,7 +54,7 @@ def color_control(color,pattern,time_set):
         return 0
     return 0
 
-def feel_control(color,emotion):
+def feel_control(color,emotion): # Function used in .feel reading to show good eyes color and expression
     if(marty.is_conn_ready):
         marty.disco_color(color)
         marty.eyes(emotion,500)
@@ -64,7 +64,5 @@ def feel_control(color,emotion):
         print("Marty is sadely not connected")
         return 0
     return 0
-
-feel_control("4080ff","wiggle")
 
 marty.close()

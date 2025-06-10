@@ -19,7 +19,7 @@ def move_left():
         print("Marty is sadely not connected")
         return 0
     
-def move_right():
+def move_right(): #Same than left but to the right
     if(marty.is_conn_ready):
         marty.sidestep("right",1,35,1000,)
     else:
@@ -33,7 +33,3 @@ def move_backward():
         print("Marty is sadely not connected")
         return 0
     return 0
-
-
-
-rick_roll()
