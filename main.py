@@ -1,10 +1,9 @@
-from math import floor
 import msvcrt
 import time
 from martypy import Marty
-from sensor import *
+from dance_management import lectureFichierDance
 from movement import *
-import re
+from sensor import *
 
 def handle_key_events(marty, key):
     # verify if a key is pressed and do the according action
@@ -23,52 +22,7 @@ def handle_key_events(marty, key):
     elif (key == b'd' or key == b'D'):
         move_right(marty, 1)
 
-def emotions(marty, feels_color, feels_mood, feels_colorhex):
-    # function to verify what color marty is standing on and do the appropriate actions
-    for i in range(len(feels_color)):
-        if(feels_color[i] == getColor(marty)):
-            marty.disco_color(feels_colorhex[i])
-            marty.eyes(feels_mood[i],500)
-            time.sleep(2)
-            marty.disco_color(000000)
 
-def createMatrix(dimension):
-    matrix = []
-    mid = floor(dimension/2)
-    for i in range(dimension): # creating the matrix
-        row = []
-        for j in range(dimension):
-            row.append(0)
-        matrix.append(row)  # adding rows to the matrix
-
-    for i in range(dimension): # show the matrix in terminal
-        for j in range(dimension):
-            if(mid == i and mid == j):
-                matrix[i][j] = 1
-    return matrix
-
-def afficherMatrix(matrix):
-        for i in range(len(matrix)): # show the matrix in terminal
-            for j in range(len(matrix)):
-                print(matrix[i][j], end=" ")
-            print()
-
-def sequential(marty, dimension, dance_steps, dance_direction):
-    matrix = createMatrix(dimension)
-    afficherMatrix(matrix)
-
-    
-    for i in range(len(dance_direction)):
-        steps = int(dance_steps[i]) * 2
-        match dance_direction[i]:
-            case "L":
-                move_left(marty, steps)
-            case "R":
-                move_right(marty, steps)
-            case "F":
-                move_forward(marty, steps)
-            case "B":
-                move_backward(marty, steps)
 
 def main():
     adresse_ip = "192.168.0.108" # modify accordingly
@@ -79,48 +33,11 @@ def main():
         # if Marty is connected
         print("Connected to Marty !")
 
-        feels = open('../real.feels', 'r') # open .feels file
-        contenu_feels = feels.read() # read the file
-        tab_feels = re.split(r'[;\n]+', contenu_feels) # split the content into a table
-        feels.close() # close file
-
-        x = 0
-        feels_color = []
-        feels_mood = []
-        feels_colorhex = []
-        for i in range(len(tab_feels)): # disassemble the original table
-            if(x == 0):
-                feels_color.append(tab_feels[i]) # table with the color of the tile
-            elif(x == 1):
-                feels_mood.append(tab_feels[i]) # table with the mood
-            elif(x == 2):
-                feels_colorhex.append(tab_feels[i]) # table with the color (in hexadecimal) of the eyes
-            x = (x+1)%3
-
-        dance = open('../test.dance', 'r')
-        contenu_dance = dance.read()
-        tab_dance = re.split(r'[ \n]+', contenu_dance)
-        print(tab_dance)
-        dance.close()
-
-        if(tab_dance[0] == "SEQ"): # if in absolute mode
-            x = 0
-            dance_steps = []
-            dance_direction = []
-            for i in range(2, len(tab_dance)): # disassemble the original table
-                if(x == 0):
-                    dance_steps.append(tab_dance[i]) # table with the number of steps
-                elif(x == 1):
-                    dance_direction.append(tab_dance[i]) # table with the direction to take
-                x = (x+1)%2
+        
 
         running = True
         while(marty.is_conn_ready() and running): # loop if Maty is connected
-            if(tab_dance[0] == "ABS"): # if in absolute mode
-                print("absolute")
-            elif(tab_dance[0] == "SEQ"): # if in sequential mode
-                print("sequential")
-                sequential(marty, int(tab_dance[1]), dance_steps, dance_direction)
+            lectureFichierDance(marty)
 
             ### emotions(marty, feels_color, feels_mood, feels_colorhex)
 
