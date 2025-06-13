@@ -93,7 +93,10 @@ class SoundPanel(QWidget):
     def play_sound_from_text(self) :
         sound_to_play = self.choosing_sound_input_field.text() # Takes the input field value as a string
         try:
-            playChoosenSound(self.marty, sound_to_play) # Call the playChoosenSound function from playSound.py that play sound from a string 
+            if sound_to_play:
+                playChoosenSound(self.marty, sound_to_play) # Call the playChoosenSound function from playSound.py that play sound from a string 
+            else :
+                print("No sound to play")
         except Exception as e:
             print(f"Error playing sound from text': {e}")
 
