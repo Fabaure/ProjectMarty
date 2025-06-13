@@ -99,7 +99,7 @@ class SoundPanel(QWidget):
 
     def set_volume_from_text(self) : 
         choosen_volume_to_change = self.choosing_volume_input_field.text() # Takes the input field value as a string because we need to apply the int() function
-        if not choosen_volume_to_change is None:
+        if choosen_volume_to_change :
             int_choosen_volume_to_change = int(choosen_volume_to_change) # Marty setVolume property takes int values
             setVolumeFromInput(self.marty, int_choosen_volume_to_change); # Call the setVolumeFromInput function from playSound.py
         else : 
