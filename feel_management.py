@@ -12,6 +12,7 @@ def emotions(marty, feels_color, feels_mood, feels_colorhex):
             marty.disco_color(000000)
 
 def lectureFichierFeel(marty):
+    # function to read a file and split the data accordingly
     feels = open('../real.feels', 'r') # open .feels file
     contenu_feels = feels.read() # read the file
     tab_feels = re.split(r'[;\n]+', contenu_feels) # split the content into a table

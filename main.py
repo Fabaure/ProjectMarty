@@ -65,7 +65,7 @@ def main():
 if __name__ == "__main__":
     main()
     
-        # mouvement seul
+        # autonomous mouvement
     '''getBattery(marty)
         if(getDistance(marty) == True):
              move_forward(marty)
