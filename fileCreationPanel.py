@@ -181,6 +181,7 @@ class FileCreationPanel(QWidget):
             filename = os.path.join(os.getcwd(), name_for_file)
         else :
             filename = os.path.join(os.getcwd(), "commands.dance")
+
         mode = self.mode_selector.currentText()
         fileBeingWrite = open(filename, "w")
 
