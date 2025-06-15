@@ -20,7 +20,7 @@ class ClickableLabel(QLabel):
         if self.onClickCall:
             self.onClickCall()
 
-class CreationPanel(QWidget):
+class InstructionListPanel(QWidget):
     def __init__(self, marty):
         super().__init__()
         self.marty = marty
