@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import (
     QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout,
-    QGridLayout, QGroupBox, QSlider, QLineEdit, QDialog, QColorDialog
+    QGridLayout, QGroupBox, QSlider, QLineEdit, QDialog, QColorDialog, QMessageBox
 )
 from PyQt6.QtGui import QColor, QPalette
 from PyQt6.QtCore import Qt
@@ -53,10 +53,10 @@ class ControlPanel(QWidget):
         movement_layout.addWidget(movement_box)
 
         # Connect buttons to movement functions
-        self.btn_forward.clicked.connect(lambda: move_forward(self.marty))
-        self.btn_backward.clicked.connect(lambda: move_backward(self.marty))
-        self.btn_left.clicked.connect(lambda: move_left(self.marty))
-        self.btn_right.clicked.connect(lambda: move_right(self.marty))
+        self.btn_forward.clicked.connect(lambda: move_forward(self.marty, 2))
+        self.btn_backward.clicked.connect(lambda: move_backward(self.marty), 2)
+        self.btn_left.clicked.connect(lambda: move_left(self.marty), 1)
+        self.btn_right.clicked.connect(lambda: move_right(self.marty), 1)
 
         # Animation control
         anim_layout = QGridLayout()
@@ -99,6 +99,7 @@ class ControlPanel(QWidget):
         self.btn_wiggle = QPushButton("wiggle")
         self.btn_eyes_control = QPushButton("Eyes control")
         self.open_dialog_btn = QPushButton("Ouvrir contrôle couleur")
+        self.calibC = QPushButton("Calibe couleur")
 
         # Placement in a grid layout
         emotion_layout.addWidget(self.btn_angry, 0,0)
@@ -107,6 +108,7 @@ class ControlPanel(QWidget):
         emotion_layout.addWidget(self.btn_wiggle,1,0)
         emotion_layout.addWidget(self.btn_eyes_control,1,1)
         emotion_layout.addWidget(self.open_dialog_btn, 1,2)
+        emotion_layout.addWidget(self.calibC, 1,3)
 
         # Set fixed size for emotion buttons
         for i in range(emotion_layout.count()):
@@ -126,6 +128,7 @@ class ControlPanel(QWidget):
         self.btn_wiggle.clicked.connect(lambda: wiggle(self.marty))
         self.btn_eyes_control.clicked.connect(lambda: eyes_control(self.marty, 45, 100))
         self.open_dialog_btn.clicked.connect(self.open_color_control)
+        self.calibC.clicked.connect(self.open_color_calibrage)
 
         self.color_square = QLabel()
         self.color_square.setFixedSize(200, 200)
@@ -175,7 +178,8 @@ class ControlPanel(QWidget):
 
     def update_color(self, marty):
         if(self.marty):
-            color_str = getColor(marty)
+            color_str = CalibrageControl.getcolor
+            print("test : " + str(color_str))
             color = QColor(color_str)
             palette = self.color_square.palette()
             palette.setColor(QPalette.ColorRole.Window, color)
@@ -186,6 +190,11 @@ class ControlPanel(QWidget):
     def open_color_control(self):
         dialog = ColorControlDialog(self.marty)
         dialog.exec()
+
+    def open_color_calibrage(self):
+        fenetre = CalibrageControl(self.marty)
+        fenetre.exec()
+
 
 
     def suivre_parcours(self):
@@ -204,25 +213,13 @@ class ControlPanel(QWidget):
                     y_diff = pos[1]-start[1]
 
                     if x_diff == 1:
-                        move_right(self.marty)
-                        move_right(self.marty)
-                        move_right(self.marty)
-                        move_right(self.marty)
-                        move_right(self.marty)
+                        move_right(self.marty, 5)
                     elif x_diff == -1:
-                        move_left(self.marty)
-                        move_left(self.marty)
-                        move_left(self.marty)
-                        move_left(self.marty)
-                        move_left(self.marty)
+                        move_left(self.marty, 5)
                     elif y_diff == 1:
-                        move_forward(self.marty)
-                        move_forward(self.marty)
-                        move_forward(self.marty)
+                        move_backward(self.marty, 6)
                     elif y_diff == -1:
-                        move_backward(self.marty)
-                        move_backward(self.marty)
-                        move_backward(self.marty)
+                        move_forward(self.marty, 6)
 
                     start = pos
                     time.sleep(3)
@@ -230,7 +227,61 @@ class ControlPanel(QWidget):
         except Exception as e:
             print(f"Erreur dans le suivi du parcours : {e}")
 
+class CalibrageControl(QDialog):
+    def __init__(self, marty):
+        super().__init__()
+        self.marty = marty
+        self.setWindowTitle("Calibrage de couleur")
+        self.setGeometry(100, 100, 300, 200)
 
+        layout = QVBoxLayout()
+
+        self.color_label = QLabel("Entrer une couleur en anglais :")
+        layout.addWidget(self.color_label)
+
+        self.color_input = QLineEdit()
+        self.color_input.setPlaceholderText("red, blue, green...")
+        layout.addWidget(self.color_input)
+
+        self.submit_btn = QPushButton("Calibrer")
+        self.submit_btn.clicked.connect(self.calibrate_color)
+        layout.addWidget(self.submit_btn)
+        
+        self.submit_btn2 = QPushButton("Couleur")
+        self.submit_btn2.clicked.connect(self.getcolor)
+        layout.addWidget(self.submit_btn2)
+
+        self.setLayout(layout)
+
+    def calibrate_color(self):
+        color_name = self.color_input.text().strip().lower()
+
+        qcolor = QColor(color_name)
+
+        if not qcolor.isValid():
+            QMessageBox.critical(self, "Erreur", f"'{color_name}' n'est pas une couleur valide.")
+            return
+
+        nombre = getColornb(self.marty)
+
+        self.calibrated_range = {
+            "name": color_name,
+            "range": {
+                "min": (nombre-5),
+                "max": (nombre+5),
+            }
+        }
+
+        print(f"Couleur '{color_name}' calibrée avec plage RGB : {self.calibrated_range['range']}")
+
+        QMessageBox.information(self, "Succès", f"La couleur '{color_name}' a été calibrée !")
+
+    def getcolor(self):
+        if(self.calibrated_range['range']['min'] < getColornb(self.marty) and self.calibrated_range['range']['max'] > getColornb(self.marty)):
+            res = {self.calibrated_range['name']}
+            return res
+
+        
 class ColorControlDialog(QDialog):
     def __init__(self, marty):
         super().__init__()
