@@ -23,8 +23,7 @@ class KeyboardInterface(QWidget):
         layout.addWidget(self.make_label("E", "Capteurs"), 2, 1)
         self.setLayout(layout)
 
-        
-        keyboard_loop(marty)
+        threading.Thread(target=keyboard_loop, args=(self.marty,), daemon=True).start()
 
     def make_label(self, key, text):
         label = QLabel(f"{key} → {text}")
