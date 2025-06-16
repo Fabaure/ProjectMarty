@@ -31,13 +31,6 @@ class InstructionListPanel(QWidget):
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             self.menu_widget.addItem(item)
 
-        self.setStyleSheet("""
-            QListWidget { color: #FFFFFF; background-color: #222c34; }
-            QListWidget::item { height: 50px; }
-            QListWidget::item:selected { background-color: #222c34 }
-            QLabel { background-color: #FFFFFF; qproperty-alignment: AlignCenter; border-radius:10px}
-            QPushButton { background-color: #d6adff; padding: 20px; font-size: 18px; border-radius:10px}
-        """)
 
         itemModification(self.menu_widget, 0, "Avancer")
         itemModification(self.menu_widget, 1, "Reculer")
@@ -112,19 +105,19 @@ class InstructionListPanel(QWidget):
 
     def avancer(self):
         print("Avancer -> envoyer")
-        move_forward(self.marty)
+        move_forward(self.marty, 2)
 
     def reculer(self):
         print("Reculer -> envoyer")
-        move_backward(self.marty)
+        move_backward(self.marty, 2)
 
     def tournerdroite(self):
         print("TournerDroite -> envoyer")
-        move_right(self.marty)
+        move_right(self.marty, 1)
 
     def tournergauche(self):
         print("TournerGauche -> envoyer")
-        move_left(self.marty)
+        move_left(self.marty, 1)
 
     def dancer(self):
         print("Dancer -> envoyer")
