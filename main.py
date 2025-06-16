@@ -4,7 +4,7 @@ from mainWindow import MainWindow  # Ton fichier principal avec MainWindow
 from gamepad_interface import GamepadInterface
 from martypy import Marty
 from kb_interface import KeyboardInterface
-from Keyboard import keyboard_loop
+from KeyboardT import keyboard_loop
 
 def launch_interface():
     app = QApplication(sys.argv)

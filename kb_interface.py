@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QGridLayout
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
 from martypy import Marty
-from Keyboard import keyboard_loop
+from KeyboardT import keyboard_loop
 
 class KeyboardInterface(QWidget):
     def __init__(self, marty):
