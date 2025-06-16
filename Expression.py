@@ -40,3 +40,23 @@ def eyes_control(marty,angle,time_in_ms):
         return 0
     return 0
 
+def color_control(marty,color,pattern,time_set):
+    if(marty):
+        marty.disco_pattern(int(pattern))
+        marty.disco_color(color)
+        time.sleep(int(time_set))
+    else:
+        print("Marty is sadely not connected")
+        return 0
+    return 0
+
+def feel_control(marty,color,emotion):
+    if(marty):
+        marty.disco_color(color)
+        marty.eyes(emotion,500)
+        time.sleep(2)
+        marty.disco_color(000000)
+    else:
+        print("Marty is sadely not connected")
+        return 0
+    return 0

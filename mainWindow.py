@@ -2,7 +2,10 @@ import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QStackedWidget, QGridLayout, QGroupBox, QLineEdit, QLabel
 from martypy import Marty
 from controlPanel import ControlPanel
-from creationPanel import CreationPanel
+from instructionListPanel import InstructionListPanel
+from soundPanel import SoundPanel
+from fileCreationPanel import FileCreationPanel
+from feelCreationPanel import FeelCreationPanel
 from sensor import *
 
 class MainWindow(QWidget):
@@ -11,29 +14,45 @@ class MainWindow(QWidget):
         self.marty = marty
         self.interface()
 
+
     def interface(self):
-
+        # Adding the different panel
         self.control_panel = ControlPanel(self.marty)
-        self.creation_panel = CreationPanel(self.marty)
+        self.instruction_list_panel = InstructionListPanel(self.marty)
+        self.sound_panel = SoundPanel(self.marty)
+        self.file_creation_panel = FileCreationPanel(self.marty)
+        self.feel_creation_panel = FeelCreationPanel(self.marty)
 
+        # Put the different panel in a stackedWidget
         self.stack = QStackedWidget()
         self.stack.addWidget(self.control_panel)
-        self.stack.addWidget(self.creation_panel)
-
+        self.stack.addWidget(self.instruction_list_panel)
+        self.stack.addWidget(self.sound_panel)
+        self.stack.addWidget(self.file_creation_panel)
+        self.stack.addWidget(self.feel_creation_panel)
+        
+        # Button to switch to the different panel
         self.btn_control = QPushButton("Control Panel")
-        self.btn_creation = QPushButton("Creation Panel")
+        self.btn_instruction_list = QPushButton("Instruction List Panel")
+        self.btn_sound = QPushButton("Sound Panel")
+        self.btn_file_creation = QPushButton("File Creation Panel")
+        self.btn_feel_creation = QPushButton("Feel Creation Panel")
+
+        
+        # Connexion layout 
 
         connexion_layout = QGridLayout()
-        self.label = QLabel("Adresse IP :")
-        self.input_field = QLineEdit()
 
         # Choose IP Address
-
-        self.button = QPushButton("Ok")
-        self.button.clicked.connect(self.connect)
+        self.label = QLabel("Adresse IP :")
+        self.ip_address_input_field = QLineEdit() # Create the input to put text
+        
+        self.connexionButton = QPushButton("Ok") # button
+        self.connexionButton.clicked.connect(self.connect) # When connexion button is clicked, it calls the function connect
+        
         connexion_layout.addWidget(self.label)
-        connexion_layout.addWidget(self.input_field)
-        connexion_layout.addWidget(self.button)
+        connexion_layout.addWidget(self.ip_address_input_field)
+        connexion_layout.addWidget(self.connexionButton)
         connexion = QGroupBox("Connexion")
         connexion.setLayout(connexion_layout)
         
@@ -48,14 +67,23 @@ class MainWindow(QWidget):
         robot_info.addWidget(self.battery_label)
         robot_info.addWidget(self.statut_robot)
         
-
+        # choosing menu panel, button connectivity, link to the stacked widget 
         self.btn_control.clicked.connect(lambda: self.stack.setCurrentIndex(0))
-        self.btn_creation.clicked.connect(lambda: self.stack.setCurrentIndex(1))
+        self.btn_instruction_list.clicked.connect(lambda: self.stack.setCurrentIndex(1))
+        self.btn_sound.clicked.connect(lambda: self.stack.setCurrentIndex(2))
+        self.btn_file_creation.clicked.connect(lambda: self.stack.setCurrentIndex(3))
+        self.btn_feel_creation.clicked.connect(lambda: self.stack.setCurrentIndex(4))
 
+
+        # choosing panel set up 
         btn_layout = QHBoxLayout()
         btn_layout.addWidget(self.btn_control)
-        btn_layout.addWidget(self.btn_creation)
-
+        btn_layout.addWidget(self.btn_instruction_list)
+        btn_layout.addWidget(self.btn_sound)
+        btn_layout.addWidget(self.btn_file_creation)
+        btn_layout.addWidget(self.btn_feel_creation)
+        
+        # main page screen
         main_layout = QVBoxLayout()
         main_layout.addLayout(btn_layout)
         main_layout.addWidget(connexion)
@@ -67,9 +95,9 @@ class MainWindow(QWidget):
 
 
     def connect(self):
-        texte = self.input_field.text()
+        ipaddressText = self.ip_address_input_field.text() # take the ip address from the input text
         try:
-            marty = Marty("wifi", texte) 
+            marty = Marty("wifi", ipaddressText) #send the ip to marty
             print("Marty connecté !")
             self.marty = marty
             self.statut_robot.setText("Connected")
@@ -88,15 +116,20 @@ class MainWindow(QWidget):
     def updateMarty(self, marty):
         # Remove old panels
         self.stack.removeWidget(self.control_panel)
-        self.stack.removeWidget(self.creation_panel)
+        self.stack.removeWidget(self.instruction_list_panel)
+        self.stack.removeWidget(self.sound_panel)
+        self.stack.removeWidget(self.file_creation_panel)
+        self.stack.removeWidget(self.feel_creation_panel)
 
         # Create new panels with the updated marty
         self.control_panel = ControlPanel(marty)
-        self.creation_panel = CreationPanel(marty)
+        self.instruction_list_panel = InstructionListPanel(marty)
+        self.sound_panel = SoundPanel(marty)
+        self.file_creation_panel = FileCreationPanel(marty)
+        self.feel_creation_panel = FeelCreationPanel(marty)
 
         # Add new panels
         self.stack.addWidget(self.control_panel)
-        self.stack.addWidget(self.creation_panel)
-
-
-
+        self.stack.addWidget(self.instruction_list_panel)
+        self.stack.addWidget(self.sound_panel)
+        self.stack.addWidget(self.file_creation_panel)
