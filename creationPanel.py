@@ -96,19 +96,19 @@ class CreationPanel(QWidget):
 
     def avancer(self):
         print("Avancer -> envoyer")
-        move_forward(self.marty)
+        move_forward(self.marty, 2)
 
     def reculer(self):
         print("Reculer -> envoyer")
-        move_backward(self.marty)
+        move_backward(self.marty, 2)
 
     def tournerdroite(self):
         print("TournerDroite -> envoyer")
-        move_right(self.marty)
+        move_right(self.marty, 1)
 
     def tournergauche(self):
         print("TournerGauche -> envoyer")
-        move_left(self.marty)
+        move_left(self.marty, 1)
 
     def dancer(self):
         print("Dancer -> envoyer")
