@@ -5,6 +5,7 @@ from controlPanel import ControlPanel
 from instructionListPanel import InstructionListPanel
 from soundPanel import SoundPanel
 from fileCreationPanel import FileCreationPanel
+from feelCreationPanel import FeelCreationPanel
 from sensor import *
 
 class MainWindow(QWidget):
@@ -27,6 +28,7 @@ class MainWindow(QWidget):
         self.instruction_list_panel = InstructionListPanel(self.marty)
         self.sound_panel = SoundPanel(self.marty)
         self.file_creation_panel = FileCreationPanel(self.marty)
+        self.feel_creation_panel = FeelCreationPanel(self.marty)
 
         # Put the different panel in a stackedWidget
         self.stack = QStackedWidget()
@@ -34,13 +36,14 @@ class MainWindow(QWidget):
         self.stack.addWidget(self.instruction_list_panel)
         self.stack.addWidget(self.sound_panel)
         self.stack.addWidget(self.file_creation_panel)
+        self.stack.addWidget(self.feel_creation_panel)
         
         # Button to switch to the different panel
         self.btn_control = QPushButton("Control Panel")
         self.btn_instruction_list = QPushButton("Instruction List Panel")
         self.btn_sound = QPushButton("Sound Panel")
-
         self.btn_file_creation = QPushButton("File Creation Panel")
+        self.btn_feel_creation = QPushButton("Feel Creation Panel")
 
         
         # Connexion layout 
@@ -76,6 +79,7 @@ class MainWindow(QWidget):
         self.btn_instruction_list.clicked.connect(lambda: self.stack.setCurrentIndex(1))
         self.btn_sound.clicked.connect(lambda: self.stack.setCurrentIndex(2))
         self.btn_file_creation.clicked.connect(lambda: self.stack.setCurrentIndex(3))
+        self.btn_feel_creation.clicked.connect(lambda: self.stack.setCurrentIndex(4))
 
 
         # choosing panel set up 
@@ -84,6 +88,7 @@ class MainWindow(QWidget):
         btn_layout.addWidget(self.btn_instruction_list)
         btn_layout.addWidget(self.btn_sound)
         btn_layout.addWidget(self.btn_file_creation)
+        btn_layout.addWidget(self.btn_feel_creation)
         
         # main page screen
         main_layout = QVBoxLayout()
@@ -121,12 +126,14 @@ class MainWindow(QWidget):
         self.stack.removeWidget(self.instruction_list_panel)
         self.stack.removeWidget(self.sound_panel)
         self.stack.removeWidget(self.file_creation_panel)
+        self.stack.removeWidget(self.feel_creation_panel)
 
         # Create new panels with the updated marty
         self.control_panel = ControlPanel(marty)
         self.instruction_list_panel = InstructionListPanel(marty)
         self.sound_panel = SoundPanel(marty)
         self.file_creation_panel = FileCreationPanel(marty)
+        self.feel_creation_panel = FeelCreationPanel(marty)
 
         # Add new panels
         self.stack.addWidget(self.control_panel)
